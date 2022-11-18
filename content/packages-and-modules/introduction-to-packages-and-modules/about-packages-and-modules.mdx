@@ -1,67 +1,70 @@
 ---
 title: About packages and modules
 redirect_from:
-  - /getting-started/packages
+    - /getting-started/packages
 ---
 
-The npm registry contains packages, many of which are also Node modules, or contain Node modules. Read on to understand how they differ and how they interact.
+The npm registry contains javascript packages that can be created to be used in a specific platform or as universal packages (that is, they can be used on any platform).
+
+A javascript package can be a module or contain multiple modules and, the way to consume it depends on the module system resolution you use.
+
+Read on to understand how packages and modules work.
 
 ## About packages
 
 A **package** is a file or directory that is described by a `package.json` file. A package must contain a `package.json` file in order to be published to the npm registry. For more information on creating a `package.json` file, see "[Creating a package.json file][pkg-json]".
 
 Packages can be unscoped or scoped to a user or organization, and scoped packages can be private or public. For more information, see
-- "[About scopes][about-scopes]"
-- "[About private packages][private-pkgs]"
-- "[Package scope, access level, and visibility][pkg-viz]"
+
+-   "[About scopes][about-scopes]"
+-   "[About private packages][private-pkgs]"
+-   "[Package scope, access level, and visibility][pkg-viz]"
 
 ### About package formats
 
 A package is any of the following:
 
-* a) A folder containing a program described by a `package.json` file.
-* b) A gzipped tarball containing (a).
-* c) A URL that resolves to (b).
-* d) A `<name>@<version>` that is published on the registry with (c).
-* e) A `<name>@<tag>` that points to (d).
-* f) A `<name>` that has a `latest` tag satisfying (e).
-* g) A `git` url that, when cloned, results in (a).
+-   a) A folder containing a program described by a `package.json` file.
+-   b) A gzipped tarball containing (a).
+-   c) A URL that resolves to (b).
+-   d) A `<name>@<version>` that is published on the registry with (c).
+-   e) A `<name>@<tag>` that points to (d).
+-   f) A `<name>` that has a `latest` tag satisfying (e).
+-   g) A `git` url that, when cloned, results in (a).
 
 ### npm package git URL formats
 
 Git URLs used for npm packages can be formatted in the following ways:
 
-- `git://github.com/user/project.git#commit-ish`
-- `git+ssh://user@hostname:project.git#commit-ish`
-- `git+http://user@hostname/project/blah.git#commit-ish`
-- `git+https://user@hostname/project/blah.git#commit-ish`
+-   `git://github.com/user/project.git#commit-ish`
+-   `git+ssh://user@hostname:project.git#commit-ish`
+-   `git+http://user@hostname/project/blah.git#commit-ish`
+-   `git+https://user@hostname/project/blah.git#commit-ish`
 
 The `commit-ish` can be any tag, sha, or branch that can be supplied as
 an argument to `git checkout`. The default `commit-ish` is `master`.
 
 ## About modules
 
-A **module** is any file or directory in the `node_modules` directory that can be loaded by the Node.js `require()` function.
+A **JavaScript module** is a block code that can be consumed in a number of ways, depending on how it is created and used.
 
-To be loaded by the Node.js `require()` function, a module must be one of the following:
+Historically, one of the most popular ways to define and use modules was the CommonJS module resolution (CJS), created by the NodeJS team.
 
-* A folder with a `package.json` file containing a `"main"` field.
-* A JavaScript file.
+Since es6 was published the ES Modules tend to be the standard and are widely used in most JavaScript environments.
+
+A package can contain one or more modules and can be defined by two different entry points in the package.json file.
+
+-   The "exports" property allows you to define multiple entry points and gives you the ability to add conditions. Conditions (conditional exports) can be used to define target platforms, format, and environment to use.
+
+-   The "main" property is now supported for compatibility with earlier versions of Node and others tools but it's limited in that it only defines the main entry of a package.
 
 <div class="note">
 
-<span class="bold">**Note:** </span>
-Since modules are not required to have a `package.json` file, not all modules are packages. Only modules that have a `package.json` file are also packages.
+**Note:**
+It is possible to find packages that have internal modules with a "package.json" file included, this is because in previous
+versions of NodeJS this structure was used to create sub-packages. This structure has been replaced by conditional exports.
 
 </div>
-
-In the context of a Node program, the `module` is also the thing that
-was loaded *from* a file. For example, in the following program:
-
-    var req = require('request')
-
-we might say that "The variable `req` refers to the `request` module".
-
 
 [about-scopes]: about-scopes
 [private-pkgs]: about-private-packages
